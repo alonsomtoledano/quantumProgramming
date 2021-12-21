@@ -1,6 +1,6 @@
 import networkx as nx
 import dwave_networkx as dnx
-import matplotlib.pyplot as mpl
+import matplotlib.pyplot as plt
 
 from dwave.system.samplers import DWaveSampler
 from dwave.system.composites import EmbeddingComposite
@@ -16,4 +16,4 @@ minimumVertexCover = dnx.min_vertex_cover(graph, sampler) # minimum vertex cover
 print(minimumVertexCover) # print result
 
 nx.draw(graph, with_labels = True) # draw graph
-mpl.savefig('./annealing/annealingCircuit_1_graph.png') # save graph png
+plt.savefig('./annealing/annealingCircuit_1_graph.png') # save graph png
