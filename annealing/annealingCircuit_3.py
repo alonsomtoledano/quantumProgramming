@@ -26,27 +26,27 @@ def scheduling(time, location, length, mandatory):
         return (location and mandatory)
 
     else: # work out of time
-        return (not location and not length)
+        return (not location and length)
 
 
-csp = dwavebinarycsp.ConstraintSatisfactionProblem(dwavebinarycsp.BINARY)
-csp.add_constraint(scheduling, ['time', 'location', 'length', 'mandatory'])
+csp = dwavebinarycsp.ConstraintSatisfactionProblem(dwavebinarycsp.BINARY) # define it is an Binary Constraint Satisfaction Problem
+
+csp.add_constraint(scheduling, ['time', 'location', 'length', 'mandatory']) # define constraints and the function to aply them
 
 
-bqm = dwavebinarycsp.stitch(csp)
-# print(bqm.linear)
-# print(bqm.quadratic)
+bqm = dwavebinarycsp.stitch(csp) # build a binary quadratic model with minimal energy
+print(bqm)
 
-response = sampler.sample(bqm, num_reads = 5000)
-min_energy = next(response.data(['energy']))[0]
+print('-----------')
 
+response = sampler.sample(bqm, num_reads = 5000) # execute 5000 iterations in the defined sampler
 print(response)
 
 print('-----------')
 
 total = 0
 
-for sample, energy, occurences in response.data(['sample', 'energy', 'num_occurrences']):
+for sample, energy, occurences in response.data(['sample', 'energy', 'num_occurrences']): # response iteration
     total = total + occurences
 
     time = 'business hours' if sample['time'] else 'evenings'
